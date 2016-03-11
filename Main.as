@@ -5,7 +5,7 @@
 	import flash.events.KeyboardEvent;
 	import flash.events.Event;
 	
-	public class Main extends MovieClip 
+	public class frmGame extends MovieClip 
 	{
 		protected const vMapW:int = 700;
 		protected const vMapH:int = 400;
@@ -27,7 +27,7 @@
 			fnGameStart();	
 		}
 		
-		//EVENT: ENTERFRAME
+		//Enter Frame 
 		private function o_enterFrame(e:Event):void
 		{
 			if (!vIsPause)
@@ -37,10 +37,10 @@
 			}
 		}
 				
-		//EVENT: MOUSE UP
+		//Replay
 		private function o_mUp(e:MouseEvent):void
 		{
-			if (e.target.name == "btnReplay")
+			if (e.target.name == "btnReplay") // Game wordt gerestart
 			{
 				fnGameRestart();
 			}
@@ -50,7 +50,7 @@
 			}
 		}
 		
-		//EVENT: Keyboard
+		//EventListener Keyboard
 		private function o_keyDown(e:KeyboardEvent):void
 		{
 			switch (e.keyCode) 
@@ -61,7 +61,7 @@
 
 		}
 		
-		//FUNC: Move Player/BIRD
+		//Movement Functie
 		private function fnMovePlayer():void
 		{
 			if (_P.y < vMapH +_P.height && _P.y > 0 -_P.height )
@@ -84,14 +84,14 @@
 			}
 		}
 		
-		//FUNC: Move Map/PIPES
+		//Map Beweging
 		private function fnMoveMap():void
 		{
 			for (var i:int = 0; i < vPipeMax; i++)
 			{
 				var tmpPipe = _conMap.getChildAt(i);
 				
-				//if (tmpPipe.hitTestObject(_P))
+				//Wordt ie geraakt ?
 				if (tmpPipe._HIT.hitTestPoint(_P.x, _P.y, true))
 				{
 					fnGameOver();
@@ -113,7 +113,7 @@
 			}
 		}
 		
-		//FUNC: Game Start
+		//Game Start
 		private function fnGameStart():void
 		{
 			//ADD BIRD
@@ -122,7 +122,7 @@
 			_P.y = vMapH / 3;
 			_conP.addChild(_P);
 			
-			//ADD PIPE
+			//Pipes ++
 			for (var i:int = 0; i < vPipeMax; i++)
 			{
 				var tmpPipe:clsPipe = new clsPipe();
@@ -133,27 +133,27 @@
 			
 			btnReplay.visible = false;
 			
-			//EVENTLISTENER
+			
 			addEventListener(Event.ENTER_FRAME, o_enterFrame, false, 0, true);
 			this.stage.addEventListener(MouseEvent.MOUSE_UP, o_mUp, false, 0, true);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, o_keyDown, false, 0, true);
 		}
 		
-		//FUNC: Game Over
+		//Game Over Functie
 		private function fnGameOver():void
 		{
 			vIsPause = true;
 			btnReplay.visible = true;
 		}
 		
-		//FUNC: Game Restart
+		//Restart
 		private function fnGameRestart():void
 		{
 			vIsPause = false;
 			vYSpeed = 0;
 			btnReplay.visible = false;
 			
-			if (vScores > vScoresBest)
+			if (vScores > vScoresBest)//Score veranderen als die groter is dan.
 			{
 				vScoresBest = vScores;
 			}
@@ -166,14 +166,14 @@
 			
 			for (var i:int = 0; i < vPipeMax; i++)
 			{
-				var tmpPipe = _conMap.getChildAt(i);
+				var tmpPipe = _conMap.getChildAt(i);//placement pipes
 				tmpPipe.x = (i * 350) + 1050;
 				tmpPipe.y = Math.random() * 250;
 			}
 		}
 		
-		//FUNC: KILL ALL :D
-		private function fnKill():void
+		
+		private function fnKill():void //Kill functie
 		{
 			removeEventListener(Event.ENTER_FRAME, o_enterFrame);
 			this.removeEventListener(MouseEvent.MOUSE_UP, o_mUp);
